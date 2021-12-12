@@ -8,6 +8,9 @@
 
 extern "C"
 {
-	COMM_API void comm_send_msg(const char*, int);
-	COMM_API void comm_recv_msg(char*, int&);
+	COMM_API void* comm_create_server();
+	COMM_API void* comm_create_client();
+	COMM_API void comm_delete(void*);
+	COMM_API void comm_send_msg(void*, const char*, int);
+	COMM_API void comm_recv_msg(void*, char*, int, int&);
 }

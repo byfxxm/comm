@@ -1,14 +1,26 @@
 #include "pch.h"
 #include "comm_imp.h"
 
+comm_base::~comm_base()
+{
+	CloseHandle(_pipe);
+}
+
 void comm_base::send(const char* buff, int size)
 {
-	WriteFile(_pipe, buff, size, NULL, NULL);
+	if (!WriteFile(_pipe, buff, size, NULL, NULL))
+		throw std::exception("send error");
 }
 
 void comm_base::recv(char* buff, int size, int& actual_size)
 {
-	ReadFile(_pipe, buff, size, (DWORD*)&actual_size, NULL);
+	if (!ReadFile(_pipe, buff, size, (DWORD*)&actual_size, NULL))
+		throw std::exception("recv error");
+}
+
+comm_server::~comm_server()
+{
+	DisconnectNamedPipe(_pipe);
 }
 
 comm_server::comm_server()
@@ -31,7 +43,7 @@ comm_server::comm_server()
 
 comm_client::comm_client()
 {
-	while (!WaitNamedPipe(_pipe_name, NMPWAIT_USE_DEFAULT_WAIT))
+	while (!WaitNamedPipe(_pipe_name, NMPWAIT_WAIT_FOREVER))
 	{
 		std::cout << std::this_thread::get_id() << " is waiting server" << std::endl;
 		std::this_thread::yield();
