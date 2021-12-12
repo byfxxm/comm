@@ -23,27 +23,27 @@
 int main()
 {
 
-    std::thread th1([&]()
-        {
-            auto server = comm_create_server();
-            comm_send_msg(server, "hello", strlen("hello"));
-            comm_delete(server);
-        });
+	std::thread th1([&]()
+		{
+			auto server = comm_create_server();
+			comm_send_msg(server, "hello", strlen("hello"));
+			comm_delete(server);
+		});
 
-    std::thread th2([&]()
-        {
-            auto client = comm_create_client();
-            char buff[20]{ 0 };
-            unsigned long actual_size = 0;
-            comm_recv_msg(client, buff, sizeof(buff), actual_size);
-            std::cout << buff << std::endl;
-            comm_delete(client);
-        });
+	std::thread th2([&]()
+		{
+			auto client = comm_create_client();
+			char buff[20]{ 0 };
+			unsigned long actual_size = 0;
+			comm_recv_msg(client, buff, sizeof(buff), actual_size);
+			std::cout << buff << std::endl;
+			comm_delete(client);
+		});
 
-    th1.join();
-    th2.join();
+	th1.join();
+	th2.join();
 
-    return 0;
+	return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
