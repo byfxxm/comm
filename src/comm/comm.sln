@@ -13,8 +13,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "comm_tests", "comm_tests\co
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client_demo", "client_demo\client_demo.vcxproj", "{49E4CF91-F8C8-4C30-B2A1-EB1B6C29FAEE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9416C92E-170D-4E1B-B253-F169B319CABC} = {9416C92E-170D-4E1B-B253-F169B319CABC}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server_demo", "server_demo\server_demo.vcxproj", "{86503E70-3372-43D1-80D0-F2F1AC9D4FF1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9416C92E-170D-4E1B-B253-F169B319CABC} = {9416C92E-170D-4E1B-B253-F169B319CABC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,7 +11,7 @@ bool comm_base::send_msg(const std::string& msg)
 	if (!WriteFile(_pipe, std::to_string(msg.length()).c_str(), sizeof(size_t), NULL, NULL))
 		return false;
 
-	if (!WriteFile(_pipe, msg.c_str(), msg.length(), NULL, NULL))
+	if (!WriteFile(_pipe, msg.c_str(), (DWORD)msg.length(), NULL, NULL))
 		return false;
 
 	return true;
