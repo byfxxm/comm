@@ -6,13 +6,13 @@ comm_base::~comm_base()
 	CloseHandle(_pipe);
 }
 
-void comm_base::send(const char* buff, int size)
+void comm_base::send(const char* buff, unsigned long size)
 {
 	if (!WriteFile(_pipe, buff, size, NULL, NULL))
 		throw std::exception("send error");
 }
 
-void comm_base::recv(char* buff, int size, int& actual_size)
+void comm_base::recv(char* buff, unsigned long size, unsigned long& actual_size)
 {
 	if (!ReadFile(_pipe, buff, size, (DWORD*)&actual_size, NULL))
 		throw std::exception("recv error");

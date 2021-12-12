@@ -34,7 +34,7 @@ int main()
         {
             auto client = comm_create_client();
             char buff[20]{ 0 };
-            int actual_size = 0;
+            unsigned long actual_size = 0;
             comm_recv_msg(client, buff, sizeof(buff), actual_size);
             std::cout << buff << std::endl;
             comm_delete(client);
