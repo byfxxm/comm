@@ -2,16 +2,18 @@
 
 namespace comm
 {
+	constexpr size_t _msg_length{ 0 };
+
 	class comm_base
 	{
 	public:
 		virtual ~comm_base();
-		void send_msg(const std::string&);
-		void recv_msg(std::string&);
+		bool send_msg(const std::string&);
+		bool recv_msg(std::string&);
 
 	protected:
 		HANDLE _pipe;
-		const wchar_t* _pipe_name = L"\\\\.\\pipe\\comm";
+		static const wchar_t* _pipe_name;
 	};
 
 	class comm_server : public comm_base

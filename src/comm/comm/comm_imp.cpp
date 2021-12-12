@@ -1,29 +1,45 @@
 #include "pch.h"
 #include "comm_imp.h"
 
+const wchar_t* comm_base::_pipe_name = L"\\\\.\\pipe\\comm";
+
 comm_base::~comm_base()
 {
 	CloseHandle(_pipe);
 }
 
-void comm_base::send_msg(const std::string& msg)
+bool comm_base::send_msg(const std::string& msg)
 {
+	if (!WriteFile(_pipe, std::to_string(msg.length()).c_str(), sizeof(size_t), NULL, NULL))
+		return false;
+
 	if (!WriteFile(_pipe, msg.c_str(), msg.length(), NULL, NULL))
-		throw std::exception("send error");
+		return false;
+
+	return true;
 }
 
-void comm_base::recv_msg(std::string& msg)
+bool comm_base::recv_msg(std::string& msg)
 {
-	msg.clear();
+	char len[sizeof(size_t)]{ 0 };
+	if (!ReadFile(_pipe, len, sizeof(size_t), NULL, NULL))
+		return false;
+	auto length = std::stoul(std::string(len));
+
 	DWORD actual_size = 0;
 	char buff[1024]{ 0 };
+	msg.clear();
+
 	do
 	{
-		if (!ReadFile(_pipe, buff, sizeof(buff), &actual_size, NULL))
-			throw std::exception("client error");
+		if (!ReadFile(_pipe, buff, sizeof(buff) - 1, &actual_size, NULL))
+			return false;
 
 		msg += buff;
-	} while (actual_size < sizeof(buff));
+		length -= actual_size;
+	} while (length != 0);
+
+	return true;
 }
 
 comm_server::~comm_server()

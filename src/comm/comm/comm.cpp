@@ -17,12 +17,12 @@ void comm_delete(void* comm)
 	delete comm;
 }
 
-void comm_send_msg(void* comm, const std::string& msg)
+bool comm_send_msg(void* comm, const std::string& msg)
 {
 	return ((comm_base*)comm)->send_msg(msg);
 }
 
-void comm_recv_msg(void* comm, std::string& msg)
+bool comm_recv_msg(void* comm, std::string& msg)
 {
 	return ((comm_base*)comm)->recv_msg(msg);
 }

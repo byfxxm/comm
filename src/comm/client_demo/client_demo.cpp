@@ -26,7 +26,9 @@ int main()
 	while (1)
 	{
 		std::string s;
-		comm_recv_msg(client, s);
+		if (!comm_recv_msg(client, s))
+			break;
+
 		std::cout << s << std::endl;
 	}
 

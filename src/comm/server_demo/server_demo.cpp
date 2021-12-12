@@ -27,7 +27,8 @@ int main()
 	{
 		std::string s;
 		std::cin >> s;
-		comm_send_msg(server, s);
+		if (!comm_send_msg(server, s))
+			break;
 	}
 
 	comm_delete(server);

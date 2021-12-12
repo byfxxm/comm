@@ -12,6 +12,7 @@
 #include <exception>
 #include <iostream>
 #include <thread>
+#include <string>
 
 namespace comm {}
 using namespace comm;
