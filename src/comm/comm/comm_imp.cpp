@@ -44,10 +44,7 @@ comm_server::comm_server()
 comm_client::comm_client()
 {
 	while (!WaitNamedPipe(_pipe_name, NMPWAIT_WAIT_FOREVER))
-	{
-		std::cout << std::this_thread::get_id() << " is waiting server" << std::endl;
 		std::this_thread::yield();
-	}
 
 	_pipe = CreateFile(_pipe_name,
 		GENERIC_READ | GENERIC_WRITE,

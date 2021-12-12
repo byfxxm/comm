@@ -26,7 +26,7 @@ int main()
     std::thread th1([&]()
         {
             auto server = comm_create_server();
-            comm_send_msg(server, "hello", 4);
+            comm_send_msg(server, "hello", strlen("hello"));
             comm_delete(server);
         });
 
