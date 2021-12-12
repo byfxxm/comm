@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "comm_imp.h"
 
-const wchar_t* comm_base::_pipe_name = L"\\\\.\\pipe\\comm";
-
 comm_base::~comm_base()
 {
 	CloseHandle(_pipe);

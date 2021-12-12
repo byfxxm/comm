@@ -2,19 +2,16 @@
 #include "comm.h"
 #include "comm_imp.h"
 
-void* comm_create_server()
+void* comm_get_server()
 {
-	return new comm_server();
+	static comm_server inst;
+	return &inst;
 }
 
-void* comm_create_client()
+void* comm_get_client()
 {
-	return new comm_client();
-}
-
-void comm_delete(void* comm)
-{
-	delete comm;
+	static comm_client inst;
+	return &inst;
 }
 
 bool comm_send_msg(void* comm, const std::string& msg)

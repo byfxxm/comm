@@ -9,9 +9,8 @@
 
 extern "C"
 {
-	COMM_API void* comm_create_server();
-	COMM_API void* comm_create_client();
-	COMM_API void comm_delete(void* comm);
+	COMM_API void* comm_get_server();
+	COMM_API void* comm_get_client();
 	COMM_API bool comm_send_msg(void* comm, const std::string& msg);
 	COMM_API bool comm_recv_msg(void* comm, std::string& msg);
 }

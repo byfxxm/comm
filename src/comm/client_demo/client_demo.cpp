@@ -21,7 +21,7 @@
 
 int main()
 {
-	auto client = comm_create_client();
+	auto client = comm_get_client();
 	std::cout << "pipe client started" << std::endl;
 
 	std::thread send([&]()
@@ -49,7 +49,6 @@ int main()
 
 	send.join();
 	recv.join();
-	comm_delete(client);
 	return 0;
 }
 

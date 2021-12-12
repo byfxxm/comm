@@ -21,7 +21,7 @@
 
 int main()
 {
-	auto server = comm_create_server();
+	auto server = comm_get_server();
 	std::cout << "pipe server started" << std::endl;
 
 	std::thread send([&]()
@@ -49,7 +49,6 @@ int main()
 
 	send.join();
 	recv.join();
-	comm_delete(server);
 	return 0;
 }
 
