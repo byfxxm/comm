@@ -9,5 +9,11 @@
 
 // 添加要在此处预编译的标头
 #include "framework.h"
+#include <exception>
+#include <iostream>
+#include <thread>
+
+namespace comm {}
+using namespace comm;
 
 #endif //PCH_H
