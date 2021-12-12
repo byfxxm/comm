@@ -2,8 +2,6 @@
 
 namespace comm
 {
-	constexpr size_t _msg_length{ 0 };
-
 	class comm_base
 	{
 	public:
