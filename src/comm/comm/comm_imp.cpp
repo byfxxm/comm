@@ -6,16 +6,24 @@ comm_base::~comm_base()
 	CloseHandle(_pipe);
 }
 
-void comm_base::send(const char* buff, unsigned long size)
+void comm_base::send_msg(const std::string& msg)
 {
-	if (!WriteFile(_pipe, buff, size, NULL, NULL))
+	if (!WriteFile(_pipe, msg.c_str(), msg.length(), NULL, NULL))
 		throw std::exception("send error");
 }
 
-void comm_base::recv(char* buff, unsigned long size, unsigned long& actual_size)
+void comm_base::recv_msg(std::string& msg)
 {
-	if (!ReadFile(_pipe, buff, size, (DWORD*)&actual_size, NULL))
-		throw std::exception("recv error");
+	msg.clear();
+	DWORD actual_size = 0;
+	char buff[1024]{ 0 };
+	do
+	{
+		if (!ReadFile(_pipe, buff, sizeof(buff), &actual_size, NULL))
+			throw std::exception("client error");
+
+		msg += buff;
+	} while (actual_size < sizeof(buff));
 }
 
 comm_server::~comm_server()

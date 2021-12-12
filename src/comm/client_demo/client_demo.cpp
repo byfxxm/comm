@@ -25,10 +25,9 @@ int main()
 
 	while (1)
 	{
-		char buff[20]{ 0 };
-		unsigned long actual_size = 0;
-		comm_recv_msg(client, buff, sizeof(buff), actual_size);
-		std::cout << buff << std::endl;
+		std::string s;
+		comm_recv_msg(client, s);
+		std::cout << s << std::endl;
 	}
 
 	comm_delete(client);

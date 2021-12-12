@@ -17,12 +17,12 @@ void comm_delete(void* comm)
 	delete comm;
 }
 
-void comm_send_msg(void* comm, const char* buff, unsigned long size)
+void comm_send_msg(void* comm, const std::string& msg)
 {
-	return ((comm_base*)comm)->send(buff, size);
+	return ((comm_base*)comm)->send_msg(msg);
 }
 
-void comm_recv_msg(void* comm, char* buff, unsigned long size, unsigned long& actual_size)
+void comm_recv_msg(void* comm, std::string& msg)
 {
-	return ((comm_base*)comm)->recv(buff, size, actual_size);
+	return ((comm_base*)comm)->recv_msg(msg);
 }

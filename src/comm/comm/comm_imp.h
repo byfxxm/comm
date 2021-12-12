@@ -6,8 +6,8 @@ namespace comm
 	{
 	public:
 		virtual ~comm_base();
-		void send(const char*, unsigned long);
-		void recv(char*, unsigned long, unsigned long&);
+		void send_msg(const std::string&);
+		void recv_msg(std::string&);
 
 	protected:
 		HANDLE _pipe;
