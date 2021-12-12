@@ -2,10 +2,37 @@
 //
 
 #include <iostream>
+#include "../comm/comm.h"
+
+#ifdef _WIN64
+#define PLATFORM "x64"
+#else
+#define PLATFORM
+#endif
+#ifdef _DEBUG
+#define CONFIG "Debug"
+#else
+#define CONFIG "Release"
+#endif
+#define LIB_DIR "../" PLATFORM "/" CONFIG "/"
+
+#pragma comment(lib, LIB_DIR "comm.lib")
 
 int main()
 {
-	std::cout << "Hello World!\n";
+	auto client = comm_create_client();
+	std::cout << "client started" << std::endl;
+
+	while (1)
+	{
+		char buff[20]{ 0 };
+		unsigned long actual_size = 0;
+		comm_recv_msg(client, buff, sizeof(buff), actual_size);
+		std::cout << buff << std::endl;
+	}
+
+	comm_delete(client);
+	return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

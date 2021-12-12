@@ -2,10 +2,36 @@
 //
 
 #include <iostream>
+#include "../comm/comm.h"
+
+#ifdef _WIN64
+#define PLATFORM "x64"
+#else
+#define PLATFORM
+#endif
+#ifdef _DEBUG
+#define CONFIG "Debug"
+#else
+#define CONFIG "Release"
+#endif
+#define LIB_DIR "../" PLATFORM "/" CONFIG "/"
+
+#pragma comment(lib, LIB_DIR "comm.lib")
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	auto server = comm_create_server();
+	std::cout << "server started" << std::endl;
+
+	while (1)
+	{
+		std::string s;
+		std::cin >> s;
+		comm_send_msg(server, s.c_str(), s.length());
+	}
+
+	comm_delete(server);
+	return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
