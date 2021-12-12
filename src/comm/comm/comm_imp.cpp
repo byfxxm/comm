@@ -19,11 +19,13 @@ bool comm_base::send_msg(const std::string& msg)
 
 bool comm_base::recv_msg(std::string& msg)
 {
-	char len[sizeof(size_t)]{ 0 };
-	if (!ReadFile(_pipe, len, sizeof(size_t), NULL, NULL))
-		return false;
-	auto length = std::stoul(std::string(len));
+	const auto len_size = sizeof(size_t);
+	char len[len_size]{ 0 };
 
+	if (!ReadFile(_pipe, len, len_size, NULL, NULL))
+		return false;
+
+	auto length = std::stoul(std::string(len));
 	DWORD actual_size = 0;
 	char buff[1024]{ 0 };
 	msg.clear();
