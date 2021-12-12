@@ -5,7 +5,7 @@ namespace comm
 	class comm_base
 	{
 	public:
-		virtual ~comm_base();
+		virtual ~comm_base() = default;
 		bool send_msg(const std::string&);
 		bool recv_msg(std::string&);
 
@@ -25,6 +25,6 @@ namespace comm
 	{
 	public:
 		comm_client();
-		virtual ~comm_client() override = default;
+		virtual ~comm_client() override;
 	};
 }

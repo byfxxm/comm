@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "comm_imp.h"
 
-comm_base::~comm_base()
-{
-	CloseHandle(_pipe);
-}
-
 bool comm_base::send_msg(const std::string& msg)
 {
 	if (!WriteFile(_pipe, std::to_string(msg.length()).c_str(), sizeof(size_t), NULL, NULL))
@@ -45,6 +40,7 @@ bool comm_base::recv_msg(std::string& msg)
 comm_server::~comm_server()
 {
 	DisconnectNamedPipe(_pipe);
+	CloseHandle(_pipe);
 }
 
 comm_server::comm_server()
@@ -63,6 +59,11 @@ comm_server::comm_server()
 
 	if (!ConnectNamedPipe(_pipe, NULL))
 		throw std::exception("fail to create pipe");
+}
+
+comm_client::~comm_client()
+{
+	CloseHandle(_pipe);
 }
 
 comm_client::comm_client()
