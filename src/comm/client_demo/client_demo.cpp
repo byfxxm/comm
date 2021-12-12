@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <thread>
 #include "../comm/comm.h"
 
 #ifdef _WIN64
@@ -21,17 +22,33 @@
 int main()
 {
 	auto client = comm_create_client();
-	std::cout << "client started" << std::endl;
+	std::cout << "pipe client started" << std::endl;
 
-	while (1)
-	{
-		std::string s;
-		if (!comm_recv_msg(client, s))
-			break;
+	std::thread send([&]()
+		{
+			while (1)
+			{
+				std::string s;
+				std::cin >> s;
+				if (!comm_send_msg(client, s))
+					break;
+			}
+		});
 
-		std::cout << s << std::endl;
-	}
+	std::thread recv([&]()
+		{
+			//while (1)
+			//{
+			//	std::string s;
+			//	if (!comm_recv_msg(client, s))
+			//		break;
 
+			//	std::cout << s << std::endl;
+			//}
+		});
+
+	send.join();
+	recv.join();
 	comm_delete(client);
 	return 0;
 }
