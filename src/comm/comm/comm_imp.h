@@ -11,7 +11,7 @@ namespace comm
 
 	protected:
 		HANDLE _pipe;
-		const wchar_t* _pipe_name{ L"\\\\.\\pipe\\comm" };
+		const wchar_t* _pipe_name{ LR"(\\.\pipe\comm)" };
 	};
 
 	class comm_server : public comm_base
