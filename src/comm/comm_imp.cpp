@@ -15,14 +15,14 @@ bool comm_base::send_msg(const std::string& msg)
 bool comm_base::recv_msg(std::string& msg)
 {
 	const auto len_size = sizeof(size_t);
-	char len[len_size]{ 0 };
+	char len[len_size]{};
 
 	if (!ReadFile(_pipe, len, len_size, NULL, NULL))
 		return false;
 
 	auto length = std::stoul(std::string(len));
 	DWORD actual_size = 0;
-	char buff[1024]{ 0 };
+	char buff[1024]{};
 	msg.clear();
 
 	do
