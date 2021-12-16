@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "comm_imp.h"
 
-bool comm_base::send_msg(const std::string& msg)
+bool comm_base_c::send_msg(const std::string& msg)
 {
 	if (!WriteFile(_pipe, std::to_string(msg.length()).c_str(), sizeof(size_t), NULL, NULL))
 		return false;
@@ -12,7 +12,7 @@ bool comm_base::send_msg(const std::string& msg)
 	return true;
 }
 
-bool comm_base::recv_msg(std::string& msg)
+bool comm_base_c::recv_msg(std::string& msg)
 {
 	const auto len_size = sizeof(size_t);
 	char len[len_size]{};
@@ -37,13 +37,13 @@ bool comm_base::recv_msg(std::string& msg)
 	return true;
 }
 
-comm_server::~comm_server()
+comm_server_c::~comm_server_c()
 {
 	DisconnectNamedPipe(_pipe);
 	CloseHandle(_pipe);
 }
 
-comm_server::comm_server()
+comm_server_c::comm_server_c()
 {
 	_pipe = CreateNamedPipe(_pipe_name,
 		PIPE_ACCESS_DUPLEX,
@@ -61,12 +61,12 @@ comm_server::comm_server()
 		throw std::exception("fail to create pipe");
 }
 
-comm_client::~comm_client()
+comm_client_c::~comm_client_c()
 {
 	CloseHandle(_pipe);
 }
 
-comm_client::comm_client()
+comm_client_c::comm_client_c()
 {
 	while (!WaitNamedPipe(_pipe_name, NMPWAIT_WAIT_FOREVER))
 		std::this_thread::yield();

@@ -2,10 +2,10 @@
 
 namespace comm
 {
-	class comm_base
+	class comm_base_c
 	{
 	public:
-		virtual ~comm_base() = default;
+		virtual ~comm_base_c() = default;
 		bool send_msg(const std::string&);
 		bool recv_msg(std::string&);
 
@@ -14,17 +14,17 @@ namespace comm
 		const wchar_t* _pipe_name{ LR"(\\.\pipe\comm)" };
 	};
 
-	class comm_server : public comm_base
+	class comm_server_c : public comm_base_c
 	{
 	public:
-		comm_server();
-		virtual ~comm_server() override;
+		comm_server_c();
+		virtual ~comm_server_c() override;
 	};
 
-	class comm_client : public comm_base
+	class comm_client_c : public comm_base_c
 	{
 	public:
-		comm_client();
-		virtual ~comm_client() override;
+		comm_client_c();
+		virtual ~comm_client_c() override;
 	};
 }
