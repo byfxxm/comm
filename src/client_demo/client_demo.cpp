@@ -19,32 +19,28 @@
 
 #pragma comment(lib, LIB_DIR "comm.lib")
 
-int main()
-{
+int main() {
 	auto client = comm_get_client();
 	std::cout << "pipe client started" << std::endl;
 
-	std::thread send([&]()
-		{
-			while (1)
-			{
-				std::string s;
-				std::cin >> s;
-				if (!comm_send_msg(client, s))
-					break;
-			}
+	std::thread send([&]() {
+		while (1) {
+			std::string s;
+			std::cin >> s;
+			if (!comm_send_msg(client, s))
+				break;
+		}
 		});
 
-	std::thread recv([&]()
-		{
-			//while (1)
-			//{
-			//	std::string s;
-			//	if (!comm_recv_msg(client, s))
-			//		break;
+	std::thread recv([&]() {
+		//while (1)
+		//{
+		//	std::string s;
+		//	if (!comm_recv_msg(client, s))
+		//		break;
 
-			//	std::cout << s << std::endl;
-			//}
+		//	std::cout << s << std::endl;
+		//}
 		});
 
 	send.join();

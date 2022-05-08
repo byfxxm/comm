@@ -1,30 +1,26 @@
 #pragma once
 
-namespace comm
-{
-	class comm_base_c
-	{
+namespace comm {
+	class CommBase {
 	public:
-		virtual ~comm_base_c() = default;
+		virtual ~CommBase() = default;
 		bool send_msg(const std::string&);
 		bool recv_msg(std::string&);
 
 	protected:
-		HANDLE _pipe;
-		const wchar_t* _pipe_name{ LR"(\\.\pipe\comm)" };
+		HANDLE pipe_;
+		const wchar_t* pipe_name_{ LR"(\\.\pipe\comm)" };
 	};
 
-	class comm_server_c : public comm_base_c
-	{
+	class CommServer : public CommBase {
 	public:
-		comm_server_c();
-		virtual ~comm_server_c() override;
+		CommServer();
+		virtual ~CommServer() override;
 	};
 
-	class comm_client_c : public comm_base_c
-	{
+	class CommClient : public CommBase {
 	public:
-		comm_client_c();
-		virtual ~comm_client_c() override;
+		CommClient();
+		virtual ~CommClient() override;
 	};
 }

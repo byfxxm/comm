@@ -20,11 +20,9 @@
 
 #pragma comment(lib, LIB_DIR "comm.lib")
 
-int main()
-{
+int main() {
 	system("start " LIB_DIR "server_demo.exe");
 	system("start " LIB_DIR "client_demo.exe");
-
 	return 0;
 }
 

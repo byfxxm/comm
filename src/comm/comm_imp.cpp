@@ -1,23 +1,21 @@
 #include "pch.h"
 #include "comm_imp.h"
 
-bool comm_base_c::send_msg(const std::string& msg)
-{
-	if (!WriteFile(_pipe, std::to_string(msg.length()).c_str(), sizeof(size_t), NULL, NULL))
+bool CommBase::send_msg(const std::string& msg) {
+	if (!WriteFile(pipe_, std::to_string(msg.length()).c_str(), sizeof(size_t), NULL, NULL))
 		return false;
 
-	if (!WriteFile(_pipe, msg.c_str(), (DWORD)msg.length(), NULL, NULL))
+	if (!WriteFile(pipe_, msg.c_str(), (DWORD)msg.length(), NULL, NULL))
 		return false;
 
 	return true;
 }
 
-bool comm_base_c::recv_msg(std::string& msg)
-{
-	const auto len_size = sizeof(size_t);
+bool CommBase::recv_msg(std::string& msg) {
+	constexpr auto len_size = sizeof(size_t);
 	char len[len_size]{};
 
-	if (!ReadFile(_pipe, len, len_size, NULL, NULL))
+	if (!ReadFile(pipe_, len, len_size, NULL, NULL))
 		return false;
 
 	auto length = std::stoul(std::string(len));
@@ -25,9 +23,8 @@ bool comm_base_c::recv_msg(std::string& msg)
 	char buff[1024]{};
 	msg.clear();
 
-	do
-	{
-		if (!ReadFile(_pipe, buff, sizeof(buff) - 1, &actual_size, NULL))
+	do {
+		if (!ReadFile(pipe_, buff, sizeof(buff) - 1, &actual_size, NULL))
 			return false;
 
 		msg += buff;
@@ -37,15 +34,13 @@ bool comm_base_c::recv_msg(std::string& msg)
 	return true;
 }
 
-comm_server_c::~comm_server_c()
-{
-	DisconnectNamedPipe(_pipe);
-	CloseHandle(_pipe);
+CommServer::~CommServer() {
+	DisconnectNamedPipe(pipe_);
+	CloseHandle(pipe_);
 }
 
-comm_server_c::comm_server_c()
-{
-	_pipe = CreateNamedPipe(_pipe_name,
+CommServer::CommServer() {
+	pipe_ = CreateNamedPipe(pipe_name_,
 		PIPE_ACCESS_DUPLEX,
 		PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
 		PIPE_UNLIMITED_INSTANCES,
@@ -54,30 +49,28 @@ comm_server_c::comm_server_c()
 		NMPWAIT_WAIT_FOREVER,
 		0);
 
-	if (_pipe == INVALID_HANDLE_VALUE)
+	if (pipe_ == INVALID_HANDLE_VALUE)
 		throw std::exception("fail to create server pipe");
 
-	if (!ConnectNamedPipe(_pipe, NULL))
+	if (!ConnectNamedPipe(pipe_, NULL))
 		throw std::exception("fail to create pipe");
 }
 
-comm_client_c::~comm_client_c()
-{
-	CloseHandle(_pipe);
+CommClient::~CommClient() {
+	CloseHandle(pipe_);
 }
 
-comm_client_c::comm_client_c()
-{
-	while (!WaitNamedPipe(_pipe_name, NMPWAIT_WAIT_FOREVER))
+CommClient::CommClient() {
+	while (!WaitNamedPipe(pipe_name_, NMPWAIT_WAIT_FOREVER))
 		std::this_thread::yield();
 
-	_pipe = CreateFile(_pipe_name,
+	pipe_ = CreateFile(pipe_name_,
 		GENERIC_READ | GENERIC_WRITE,
 		0,
 		NULL, OPEN_EXISTING,
 		0,
 		NULL);
 
-	if (_pipe == INVALID_HANDLE_VALUE)
+	if (pipe_ == INVALID_HANDLE_VALUE)
 		throw std::exception("fail to create client pipe");
 }
